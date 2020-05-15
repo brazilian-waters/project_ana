@@ -1,2 +1,3 @@
-# project_ana
-Wrangle and analyze Brazilian national waters agency data
+# Project ANA
+
+This project aims to wrangle and analyze data from [national water agency of Brazil](https://www.ana.gov.br/) (Agência Nacional de Águas in portuguese, ANA for short). 
