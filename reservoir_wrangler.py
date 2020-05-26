@@ -9,6 +9,7 @@ Data is grouped on three different systems, as follows: 'SIN',
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
+import datetime
 
 def scrape_systems(URL = r"https://www.ana.gov.br"):
     """Scrape all available systems and its URLs.
@@ -56,20 +57,43 @@ def scrape_reservoirs(df_systems):
 
         names = [None] * len(reservoirs)
         codes = [None] * len(reservoirs)
-
         for i, res in enumerate(reservoirs):            
             names[i] = " ".join(res.text.split())           
             codes[i] = int(res['value'])
-            
-        
-        df = pd.DataFrame({"code": codes,
-                           "reservoir": names,
+                    
+        df = pd.DataFrame({"res_code": codes,
+                           "res_name": names,
                            "system_id": [row.system_id] * len(reservoirs)})
         temp[index] = df
     return pd.concat(temp, ignore_index=True)
 
-        
+def scrape_history(df_systems, df_reservoirs):
+    """"Scrape all available data of all reservoirs
+    
+    Args:
+    df_systems: Pandas DataFrame holding the systems names and its URLs.
+    df_reservoirs: Pandas DataFrame holding reservoirs codes and names of all 
+    systems.
+
+    Returns:
+    df: Pandas Dataframe holding all data of all reservoirs.
+    """
+    now = datetime.datetime.now()
+#    df_tmp = df_reservoirs.merge(df_systems,
+#                                 how='left',
+#                                 on='system_id')
+
+#    df_tmp.url = df_tmp.url + r"?dropDownListReservatorios=" + df_tmp.res_code
+#    df_tmp.url = df_tmp.url + r"&dataInicial=22%2F04%2F1500"
+#    df_tmp.url = df_tmp.url + r"&dataFinal={:2d}%2F{:2d}%2F{:2d}"\
+#                .format(now.day, now.month, now.year)
+    df = None
+    return df
+
+
+
 if __name__ == '__main__':
     df_systems = scrape_systems()    
     df_reservoirs = scrape_reservoirs(df_systems)
     df_reservoirs.to_excel("reservoirs.xlsx")
+    df_history = scrape_history(df_systems, df_reservoirs)
