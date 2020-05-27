@@ -29,7 +29,7 @@ def scrape_systems(URL = r"https://www.ana.gov.br"):
     systems = list()
     SystemNamedTuple = namedtuple("system", ["name", "url"])
     for elm in elements:
-        url = elm.parent.parent.parent.find('a', href=True)['href']
+        url = URL + elm.parent.parent.parent.find('a', href=True)['href']
         name = elm.parent.parent.parent.parent.parent.find_next('strong').text
         systems.append(SystemNamedTuple(name, url))
     return systems
@@ -60,7 +60,7 @@ def scrape_reservoirs(systems):
                     
         df = pd.DataFrame({"res_code": codes,
                            "res_name": names,
-                           "system_id": [sys.system_id] * len(reservoirs)})
+                           "system_id": [i] * len(reservoirs)})
         temp[i] = df    
     return pd.concat(temp, ignore_index=True)
 
@@ -89,8 +89,7 @@ def scrape_history(df_systems, df_reservoirs):
 
 if __name__ == '__main__':
     systems = scrape_systems()
-    for s in systems:
-        print(s)
-    #df_reservoirs = scrape_reservoirs(df_systems)
+    df_reservoirs = scrape_reservoirs(systems)
+    print(df_reservoirs.tail())
     #df_reservoirs.to_excel("reservoirs.xlsx")
     #df_history = scrape_history(df_systems, df_reservoirs)
