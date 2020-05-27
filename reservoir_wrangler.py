@@ -17,10 +17,10 @@ def scrape_systems(URL = r"https://www.ana.gov.br"):
     """Scrape all available systems and its URLs.
 
     Args:
-    url: string. The URL containing all systems.
+    url: string. The URL which contains all systems.
 
     Return:
-    df: Pandas DataFrame holding the systems and its URLs.
+    systems: list of named tuples holding the systems and its URLs.
     """    
     page = requests.get(URL + r'/sar0/Home', verify=False)
     soup = BeautifulSoup(page.text, 'html.parser')
@@ -28,9 +28,9 @@ def scrape_systems(URL = r"https://www.ana.gov.br"):
 
     systems = list()
     SystemNamedTuple = namedtuple("system", ["name", "url"])
-    for i, sys in enumerate(elements):
-        url = sys.parent.parent.parent.find('a', href=True)['href']
-        name = sys.parent.parent.parent.parent.parent.find_next('strong').text
+    for elm in elements:
+        url = elm.parent.parent.parent.find('a', href=True)['href']
+        name = elm.parent.parent.parent.parent.parent.find_next('strong').text
         systems.append(SystemNamedTuple(name, url))
     return systems
 
