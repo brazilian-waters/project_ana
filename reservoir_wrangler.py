@@ -34,18 +34,18 @@ def scrape_systems(URL = r"https://www.ana.gov.br"):
         systems.append(SystemNamedTuple(name, url))
     return systems
 
-def scrape_reservoirs(df_systems):
+def scrape_reservoirs(systems):
     """Scrape the names and codes of all reservoirs, of all systems.
 
     Args:
-    df_systems: Pandas DataFrame holding the systems names and its URLs.
+    systems: list of named tuples holding the systems names and its URLs.
 
     Returns:
     df: Pandas DataFrame holding reservoirs codes and names of all systems.
     """
-    temp = [None] * len(df_systems)
-    for index, row in df_systems.iterrows():   
-        page = requests.get(row.url, verify=False)
+    temp = [None] * len(systems) # List of all systems data frames
+    for i, sys in enumerate(systems):
+        page = requests.get(sys.url, verify=False)
         soup = BeautifulSoup(page.text, 'html.parser')
         element = soup.find('select', 
                             class_="form-control input-m-sm", 
@@ -54,14 +54,14 @@ def scrape_reservoirs(df_systems):
 
         names = [None] * len(reservoirs)
         codes = [None] * len(reservoirs)
-        for i, res in enumerate(reservoirs):            
-            names[i] = " ".join(res.text.split())           
-            codes[i] = int(res['value'])
+        for j, res in enumerate(reservoirs):            
+            names[j] = " ".join(res.text.split())           
+            codes[j] = int(res['value'])
                     
         df = pd.DataFrame({"res_code": codes,
                            "res_name": names,
-                           "system_id": [row.system_id] * len(reservoirs)})
-        temp[index] = df
+                           "system_id": [sys.system_id] * len(reservoirs)})
+        temp[i] = df    
     return pd.concat(temp, ignore_index=True)
 
 def scrape_history(df_systems, df_reservoirs):
