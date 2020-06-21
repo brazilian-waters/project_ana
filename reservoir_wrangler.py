@@ -12,7 +12,7 @@ import concurrent.futures
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
-from config import DATA_DIR, RESERVOIR_DIR
+from config import DATA_DIR, SYSTEMS_DIR, RESERVOIR_DIR
 
 ##############################################################################
 
@@ -47,8 +47,37 @@ CANTAREIRA = ([("level_m", "text-center coluna_3"), # Cota (m)
 
 ##############################################################################
 
+def download_page(page_url, file_name):
+    """Download one web page and stores in a file on disk.
+    Args:
+    page_url: String. The URL of the web page to be downloaded.
+    file_name: String. The file to store the web page.
+
+    Returns:
+    response.status_code: Integer. Status of requests library, 200 is success.
+    """
+    response = requests.get(page_url, verify=False)
+    if response.status_code == 200:
+        with open(file_name, mode='wb') as file:
+            file.write(response.content)
+    print(">>> File: {} - Status: {}.".format(file_name, response.status_code))
+    return response.status_code
+
+class AllSystems():
+    """Handle systems data."""
+    def __init__(self, url=r"https://www.ana.gov.br"):
+        self.url = url
+        if not os.path.isdir(SYSTEMS_DIR):
+            os.makedirs(SYSTEMS_DIR)
+    
+    def get_systems_list(self):
+        download_page(self.url)
+        
+
+
+
 def scrape_systems(url=r"https://www.ana.gov.br"):
-    """Scrape all available systems and its URLs.
+    """Scrape all available systems and its corresponding URLs.
 
     Args:
     url: string. The URL which contains all systems.
@@ -142,21 +171,7 @@ def get_file_name(sys_id, res_code):
 
 ##############################################################################
 
-def download_page(page_url, file_name):
-    """Download one web page and store it in one file.
-    Args:
-    page_url: String. The URL of the web page to be downloaded.
-    file_name: String. The file to store the web page.
 
-    Returns:
-    response.status_code: Integer. Status of requests library, 200 is success.
-    """
-    response = requests.get(page_url, verify=False)
-    if response.status_code == 200:
-        with open(file_name, mode='wb') as file:
-            file.write(response.content)
-    print(">>> File: {} - Status: {}.".format(file_name, response.status_code))
-    return response.status_code
 
 ##############################################################################
 
