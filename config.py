@@ -2,8 +2,18 @@
 
 import os
 
-DATA_DIR = "data" # Folder to store all data.
-# Subfolder to store reservoirs'data:
-RESERVOIR_DIR = os.path.join(DATA_DIR, "reservoirs") 
-# Subfolder to store systems' data:
-SYSTEMS_DIR = os.path.join(DATA_DIR, "systems")
+DEFAULTS = dict()
+
+DEFAULTS = {
+    "DIR": r"C:\Users\2swim\Documents\ANA\__output__",
+    "JSON": True,
+    "SQLITE3": False,
+    "PICKLE": False,
+    "CSV": False
+    }
+
+# TODO: Get from a file (.yaml) and use the defaults if it is not available.
+config = DEFAULTS
+
+if not os.path.isdir(config["DIR"]):
+    os.makedirs(config["DIR"])
