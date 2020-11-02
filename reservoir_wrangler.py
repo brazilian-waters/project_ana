@@ -795,8 +795,9 @@ def scrape_history_of_reservoir(cfg: dict,
         files. The booleans entries represent if the corresponding file
         extension has to be saved to the disk.
     name_and_address : namedtuple
-        A namedtuple with two fields: 'name', that is the name of the reservoir
-        and 'address', that is the web page's URL.
+        A namedtuple with three fields: 'system', that is the name of the
+        system which the reservoir belongs to, 'name', that is the name of the
+        reservoir, 'address', that is the web page's URL.
     """
     history = _HistoryOfReservoir(name_and_address.system,
                                   name_and_address.name,
