@@ -322,7 +322,7 @@ class _SARSystems(_Template):
         address : str
             The web page address.
         """
-        super().__init__(name="@SARSystems", address=address)
+        super().__init__(name="SARSystems", address=address)
         self.__systems: list = []
 
     @property
@@ -413,9 +413,7 @@ class _ReservoirsOfSystem(_Template):
         _date: str, optional
             Final date to search for data. Format is DD/MM/YYYY.
         """
-        # Add '@' in front of the name to differentiate its file from the files
-        # that stores time histories.
-        super().__init__(name='@' + system_name,
+        super().__init__(name=system_name,
                          address=system_address)
         self.__reservoirs: list = []
         self._date: str = _date
@@ -644,6 +642,7 @@ class _HistoryOfReservoir(_Template):
         results = soup.find('tbody', class_="list")
         __tags: list = list(
                     _HistoryOfReservoir.__PARSING_MAP.get(self.system).items())
+        # TODO: Raise NotImplementedError when the self.system is not found.
         for __tag in __tags:
             __values = results.find_all('td', class_=__tag)
             # Get the value:
