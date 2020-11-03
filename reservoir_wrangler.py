@@ -691,10 +691,6 @@ class _DataBase():
                                             db_file, check_same_thread=False)
         self.__cursor: sqlite3.Cursor = self.__connection.cursor()
 
-    def __del__(self):
-        """"Close the connection to the database."""
-        self.__connection.close()
-
     def __create_table(self, table_name: str, columns: list):
         """Create tables in the database, only if the table doesn't exist.
         ...
@@ -742,7 +738,9 @@ class _DataBase():
                          ", ".join(['?' for _ in range(len(__fields))]),
                          ")"])
         self.__cursor.executemany(__sql, __list)
-        self.__connection.commit()  # Commit the changes.
+        # Commit the changes and close the connection.
+        self.__connection.commit()
+        self.__connection.close()
 
 
 def scrape_reservoirs_of_system(cfg: dict,
