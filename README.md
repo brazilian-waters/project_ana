@@ -1,8 +1,25 @@
 # An exploratory analysis of the brazilian National Water Agency (ANA)
 
-This project aims to wrangle and analyze data from [national water agency of Brazil](https://www.ana.gov.br/) (Agência Nacional de Águas in portuguese, ANA for short). 
+This project aims to wrangle data from [national water agency of Brazil](https://www.ana.gov.br/) (Agência Nacional de Águas in portuguese, ANA for short).<br>
+<br>
+The data source for the project is listed here:<br>
 
-The data source for the project is listed here:
+> * [Reservoirs' time series.](https://www.ana.gov.br/sar0/Home)<br>
 
-[Inventory of all water stations direct or indirect managed by ANA](http://telemetriaws1.ana.gov.br/EstacoesTelemetricas.aspx)
-[Data series of all brazilian water reservoirs listed in ANA website](https://www.ana.gov.br/sar0/Home)
+## Usage
+
+> 1 - Update the `config.json` as follows:
+>> * `DIR` is the folder in which you want to save th data. If the configuration file is missing, then will use `__output__` as deafult.<br>
+
+>> * Set the entries `JSON`, `SQLITE3`, `PICKLE` and `CSV` to `true` or `false`, according to file format you want to
+use as output. You may choose more than one file format, but it will make it slower to run. The `CSV` is the default.<br>
+
+> 2 - Run `reservoir_wrangler.py` and wait.
+
+> 4 - When finished, you will find all files inside the `DIR` folder. The file `sarsystems.*` holds all available systems on ANA SAR website. Currently (November2020) there are only three available systems: Cantareira, SIN, and Nordeste e Semiárido. The files `nordestes_e_semirarido.*`, `sin.json.*` and `sistema_cantareira.*` contains all reservoirs
+available on its corresponding system. All other files are holds the time series of the reservoirs thta has the sae name of the file.
+
+## Dependencies
+
+> urllib3 - Version 1.25.9<br>
+> BeautifulSoup - Version 4.9.1
