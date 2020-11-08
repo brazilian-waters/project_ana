@@ -1,5 +1,5 @@
 {"DIR": "__output__",
  "JSON": true,
- "SQLITE3": true,
- "PICKLE": true,
- "CSV": true}
+ "SQLITE3": false,
+ "PICKLE": false,
+ "CSV": false}
