@@ -291,6 +291,14 @@ class _Template(ABC):
         """
         ...
 
+    def __str__(self) -> str:
+        """"Show a human readable representation of one class object."""
+        strings = []
+        for row in self.data:
+            strings.append(f"Name: {row.name} \n\
+                             Address: {row.address}")
+        return "\n".join(strings)
+
 
 class _SARSystems(_Template):
     """Handle the data wrangling of SAR systems web page.
