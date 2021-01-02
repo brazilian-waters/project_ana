@@ -24,6 +24,9 @@ try:
 except FileNotFoundError:
     # TODO: Log it.
     config = DEFAULTS
+except json.decoder.JSONDecodeError:
+    # TODO: Log it.
+    config = DEFAULTS
 
 # Create the output dir if it doesn't exists.
 if not os.path.isdir(config["DIR"]):
